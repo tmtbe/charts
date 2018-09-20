@@ -34,6 +34,12 @@ questions:
   required: true
   label: MySQL Username
   group: "MySQL Settings"
+- variable: mysqlRootPassword
+  default: ""
+  description: "MySQL Root Password for the new user, defaults to a random 10-character alphanumeric string if not set"
+  type: password
+  label: MySQL Root Password
+  group: "MySQL Settings"
 - variable: mysqlPassword
   default: ""
   description: "MySQL Password for the new user, defaults to a random 10-character alphanumeric string if not set"
