@@ -7,7 +7,7 @@ imageTag: "5.7.14"
 ## Specify password for root user
 ##
 ## Default: random 10 character string
-mysqlRootPassword: huiyi@123
+# mysqlRootPassword: huiyi@123
 
 ## Create a database user
 ##
