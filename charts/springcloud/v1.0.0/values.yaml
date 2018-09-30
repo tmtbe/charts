@@ -1,0 +1,52 @@
+image: "springcloud"
+imageTag: "1"
+## Specify an imagePullPolicy (Required)
+## It's recommended to change this to 'Always' if the image tag is 'latest'
+## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
+##
+imagePullPolicy: IfNotPresent
+
+## Node selector
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+nodeSelector: {}
+
+active: dev
+
+livenessProbe:
+  failureThreshold: 3
+    httpGet:
+      path: /actuator/health
+      port: 80
+      scheme: HTTP
+    initialDelaySeconds: 30
+    periodSeconds: 2
+    successThreshold: 1
+    timeoutSeconds: 2
+
+readinessProbe:
+  failureThreshold: 3
+    httpGet:
+      path: /actuator/health
+      port: 80
+      scheme: HTTP
+    initialDelaySeconds: 30
+    periodSeconds: 2
+    successThreshold: 1
+    timeoutSeconds: 2
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 1000m
+
+
+## Configure the service
+## ref: http://kubernetes.io/docs/user-guide/services/
+service:
+  ## Specify a service type
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services---service-types
+  type: ClusterIP
+  port: 80

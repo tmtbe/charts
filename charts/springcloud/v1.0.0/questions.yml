@@ -1,0 +1,44 @@
+categories:
+- SpringCloud
+
+- variable: image
+  default: "registry.cn-qingdao.aliyuncs.com/huidr/demo_one"
+  description: "Docker image name"
+  type: string
+  label: Image Name
+- variable: imageTag
+  default: "0.0.1-SNAPSHOT-42"
+  description: "Docker image tag"
+  type: string
+  label: Image Tag
+- variable: active
+  default: "dev"
+  description: "运行环境，环境和K8S命名空间是一致的"
+  type: string
+  required: true
+  label: Active
+- variable: service.port
+  default: "80"
+  description: "Service port for access to SpringCloud"
+  type: string
+  label: SpringCloud NodePort number
+  required: true
+- variable: service.type
+  default: "ClusterIP"
+  description: "K8s Service type"
+  type: enum
+  group: "Services and Load Balancing"
+  options:
+    - "ClusterIP"
+    - "NodePort"
+  required: true
+  label: SpringCloud Service Type
+  show_subquestion_if: "NodePort"
+  subquestions:
+  - variable: service.nodePort
+    default: ""
+    description: "NodePort port number(to set explicitly, choose port between 30000-32767)"
+    type: int
+    min: 30000
+    max: 32767
+    label: Service NodePort number

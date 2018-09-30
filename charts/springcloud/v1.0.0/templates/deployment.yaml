@@ -1,0 +1,83 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "springcloud.fullname" . }}
+  labels:
+    app: {{ template "springcloud.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "springcloud.fullname" . }}
+    spec:
+      affinity: {}
+      containers:
+      - env:
+        - name: ACTIVE
+          value: "{{ .Values.active }}"
+        - name: PORT
+          value: "{{ .Values.service.port }}"
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health
+            port: {{ .Values.service.port }}
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 2
+          successThreshold: 1
+          timeoutSeconds: 2
+        name: one
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: springcloud
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health
+            port: {{ .Values.service.port }}
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 2
+          successThreshold: 2
+          timeoutSeconds: 2
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        stdin: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+      - args:
+        - agent
+        - -join
+        - "consul.{{ .Values.active }}"
+        image: consul
+        imagePullPolicy: Always
+        name: consul
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        stdin: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: aliyun
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

@@ -1,0 +1,11 @@
+name: springcloud
+version: 1.0.0
+appVersion: 1.0.0
+description: 快速搭建springcloud
+keywords:
+- springcloud
+- consul
+maintainers:
+- name: zhangjincheng
+  email: 896369042@qq.com
+engine: gotpl
